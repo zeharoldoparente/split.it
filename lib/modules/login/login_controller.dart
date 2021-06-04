@@ -1,31 +1,35 @@
-import 'package:flutter/cupertino.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:flutter/material.dart';
+import 'package:split_it/modules/login/login_services.dart';
 import 'package:split_it/modules/login/login_state.dart';
-import 'package:split_it/modules/login/models/user_model.dart';
 
 class LoginController {
   LoginState state = LoginStateEmpty();
   VoidCallback onUpdate;
-  LoginController({
-    required this.onUpdate,
-  });
+  final LoginService service;
+  Function(LoginState state)? onChange;
+  LoginController({required this.onUpdate, required this.service});
 
   Future<void> googleSingIn() async {
-    GoogleSignIn _googleSignIn = GoogleSignIn(
-      scopes: [
-        'email',
-      ],
-    );
     try {
       state = LoginStateLoading();
       onUpdate();
-      final account = await _googleSignIn.signIn();
-      state = LoginstateSuccess(user: UserModel.google(account!));
+      final user = await service.googleSingIn();
+      state = LoginstateSuccess(user: user);
       onUpdate();
     } catch (error) {
       state = LoginstateFailure(message: error.toString());
       onUpdate();
     }
+  }
+
+  void update() {
+    onUpdate();
+    if (onChange != null) {
+      onChange!(state);
+    }
+  }
+
+  void listen(Function(LoginState state) onChange) {
+    this.onChange = onChange;
   }
 }

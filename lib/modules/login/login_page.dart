@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:split_it/modules/login/login_controller.dart';
+import 'package:split_it/modules/login/login_services.dart';
 import 'package:split_it/modules/login/login_state.dart';
 import 'package:split_it/modules/login/widgets/social_button.dart';
 import 'package:split_it/theme/app_theme.dart';
@@ -15,13 +16,15 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    controller = LoginController(onUpdate: () {
-      if (controller.state is LoginstateSuccess) {
-        final user = (controller.state as LoginstateSuccess).user;
-        Navigator.pushReplacementNamed(context, "/home", arguments: user);
-      } else {}
-      setState(() {});
-    });
+    controller = LoginController(
+        service: LoginServiceImplements(),
+        onUpdate: () {
+          if (controller.state is LoginstateSuccess) {
+            final user = (controller.state as LoginstateSuccess).user;
+            Navigator.pushReplacementNamed(context, "/home", arguments: user);
+          } else {}
+          setState(() {});
+        });
     super.initState();
   }
 
