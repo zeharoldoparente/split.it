@@ -7,6 +7,14 @@ abstract class AppColors {
   Color get button;
   Color get border;
   Color get titleAppBar;
+  Color get borderAppBar;
+  Color get icon;
+  Color get iconBackground1;
+  Color get iconBackground2;
+  Color get infoCard;
+  Color get infoCardTitle;
+  Color get infoCardSubTitle1;
+  Color get infoCardSubTitle2;
 }
 
 class AppColorDefault implements AppColors {
@@ -23,8 +31,32 @@ class AppColorDefault implements AppColors {
   Color get button => Color(0xFF666666);
 
   @override
+  Color get infoCard => Color(0xFF666666);
+
+  @override
   Color get border => Color(0xFFC0C0C0);
 
   @override
   Color get titleAppBar => Color(0xFFFFFFFF);
+
+  @override
+  Color get borderAppBar => Color(0xFFFFFFFF);
+
+  @override
+  Color get icon => Color(0xFFF5F5F5);
+
+  @override
+  Color get iconBackground1 => Color(0xFFe9f8f2);
+
+  @override
+  Color get infoCardTitle => Color(0xFF666666);
+
+  @override
+  Color get infoCardSubTitle1 => Color(0xFF40B38C);
+
+  @override
+  Color get infoCardSubTitle2 => Color(0xFFE83F5B);
+
+  @override
+  Color get iconBackground2 => Color(0xFFfdecef);
 }
