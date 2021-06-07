@@ -53,7 +53,7 @@ class AppBarWidget extends PreferredSize {
                         ),
                         SizedBox(width: 25),
                         InfoCardWidget(
-                          value: -200,
+                          value: -20,
                         )
                       ],
                     ),

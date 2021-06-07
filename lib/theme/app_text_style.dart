@@ -9,6 +9,9 @@ abstract class AppTextStyle {
   TextStyle get infoCardTitle;
   TextStyle get infoCardSubTitle1;
   TextStyle get infoCardSubTitle2;
+  TextStyle get eventTileValue;
+  TextStyle get eventSubTile;
+  TextStyle get eventTile;
 }
 
 class AppTextStyleDefault implements AppTextStyle {
@@ -49,6 +52,24 @@ class AppTextStyleDefault implements AppTextStyle {
   TextStyle get infoCardSubTitle2 => GoogleFonts.inter(
         color: AppTheme.colors.infoCardSubTitle2,
         fontSize: 20,
+        fontWeight: FontWeight.w600,
+      );
+  @override
+  TextStyle get eventTileValue => GoogleFonts.inter(
+        color: AppTheme.colors.eventTileValue,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      );
+  @override
+  TextStyle get eventSubTile => GoogleFonts.inter(
+        color: AppTheme.colors.eventSubTile,
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+      );
+  @override
+  TextStyle get eventTile => GoogleFonts.inter(
+        color: AppTheme.colors.eventTile,
+        fontSize: 16,
         fontWeight: FontWeight.w600,
       );
 }
