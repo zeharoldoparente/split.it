@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class EventModel {
   final String title;
   final DateTime created;
