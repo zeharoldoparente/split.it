@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:split_it/modules/home/repositories/home_repository.dart';
-import 'package:split_it/modules/home/widgets/app_bar_widget.dart';
+import 'package:split_it/modules/home/home_controller.dart';
+import 'package:split_it/modules/home/home_state.dart';
+import 'package:split_it/modules/home/widgets/app_bar/app_bar_widget.dart';
 import 'package:split_it/modules/home/widgets/event_tile_widget.dart';
 import 'package:split_it/modules/login/models/user_model.dart';
-import 'package:split_it/shared/models/event_model.dart';
-
-import 'repositories/home_repository_mock.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,18 +11,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final events = <EventModel>[];
-  late HomeRepository repository;
-  void getEvents() async {
-    final response = await repository.getEvents();
-    events.addAll(response);
-    setState(() {});
-  }
+  final controller = HomeController();
 
   @override
   void initState() {
-    repository = HomeRepositoryMock();
-    getEvents();
+    controller.getEvents(() {
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -42,11 +35,20 @@ class _HomePageState extends State<HomePage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              ...events
-                  .map(
-                    (e) => EventTileWidget(model: e),
-                  )
-                  .toList()
+              if (controller.state is HomeStateLoading) ...[
+                Center(child: CircularProgressIndicator()),
+              ] else if (controller.state is HomeStateSucess) ...[
+                ...(controller.state as HomeStateSucess)
+                    .events
+                    .map(
+                      (e) => EventTileWidget(model: e),
+                    )
+                    .toList()
+              ] else if (controller.state is HomeStateFaulire) ...[
+                Text((controller.state as HomeStateFaulire).message)
+              ] else ...[
+                Container()
+              ]
             ],
           ),
         ),

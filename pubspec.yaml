@@ -11,8 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
+  
+  
+  mocktail: ^0.1.4
   cupertino_icons: ^1.0.2
   google_fonts: ^2.1.0
   #Firebase
