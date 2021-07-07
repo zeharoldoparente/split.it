@@ -23,7 +23,6 @@ class HomeController {
     } catch (e) {
       state = HomeStateFaulire(message: e.toString());
     }
-    update();
     onUpdate();
   }
 

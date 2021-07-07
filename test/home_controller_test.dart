@@ -28,7 +28,7 @@ void main() {
     expect(states[1], isInstanceOf<HomeStateSucess>());
   });
 
-  test("Testando o Google SingIn retornando Failure", () async {
+  test("Testando o getEvents - Failure", () async {
     expect(controller.state, isInstanceOf<HomeStateEmpty>());
     final states = <HomeState>[];
     controller.listen((state) => states.add(state));

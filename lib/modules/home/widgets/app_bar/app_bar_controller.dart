@@ -6,16 +6,35 @@ import 'package:split_it/modules/home/widgets/app_bar/app_bar_state.dart';
 class AppBarController {
   late HomeRepository repository;
 
+  Function(AppBarState state)? onListen;
   AppBarState state = AppBarStateEmpty();
 
-  AppBarController() {
-    repository = HomeRepositoryMock();
+  AppBarController(HomeRepository? repository) {
+    this.repository = repository ?? HomeRepositoryMock();
   }
 
-  getDashboard(VoidCallback update) async {
+  getDashboard(VoidCallback onUpdate) async {
     state = AppBarStateLoading();
-    final response = await repository.getDashboard();
-    state = AppBarStateSucess(dashboard: response);
     update();
+    try {
+      final response = await repository.getDashboard();
+      state = AppBarStateSucess(dashboard: response);
+      update();
+    } catch (e) {
+      state = AppBarStateFailure(message: e.toString());
+      update();
+    }
+    update();
+    onUpdate();
+  }
+
+  void update() {
+    if (onListen != null) {
+      onListen!(state);
+    }
+  }
+
+  void listen(Function(AppBarState state) onChange) {
+    onListen = onChange;
   }
 }

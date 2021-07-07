@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
 import 'package:split_it/modules/home/widgets/icon_dollar_widget.dart';
+import 'package:split_it/modules/home/widgets/loading_widget.dart';
 import 'package:split_it/theme/app_theme.dart';
 
 class InfoCardWidget extends StatelessWidget {
   final double value;
-  const InfoCardWidget({Key? key, required this.value}) : super(key: key);
+  final bool isLoading;
+  const InfoCardWidget({
+    Key? key,
+    required this.value,
+    this.isLoading = false,
+  }) : super(key: key);
 
   TextStyle get textStyle => value >= 0
       ? AppTheme.textStyle.infoCardSubTitle1
@@ -41,10 +47,14 @@ class InfoCardWidget extends StatelessWidget {
               SizedBox(
                 height: 4,
               ),
-              Text(
-                "R\$ ${value.toStringAsFixed(2)}",
-                style: textStyle,
-              )
+              if (isLoading == false) ...[
+                LoadignWidget(size: Size(94, 24))
+              ] else ...[
+                Text(
+                  "R\$ ${value.toStringAsFixed(2)}",
+                  style: textStyle,
+                )
+              ]
             ],
           ),
         ],
@@ -52,3 +62,48 @@ class InfoCardWidget extends StatelessWidget {
     );
   }
 }
+
+
+             /*  if (isLoading == false) ...[
+                SizedBox(
+                  width: 98,
+                  height: 24,
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey.shade200,
+                    highlightColor: Colors.grey.shade100,
+                    child: Container(
+                      color: Colors.grey.shade200,
+                    ),
+                  ),
+                )
+              ] else ...[
+                Text(
+                  "R\$ ${value.toStringAsFixed(2)}",
+                  style: textStyle,
+                )
+              ]
+ */
+
+
+    /*           if (isLoading == false) ...[
+                Container(
+                  child: SizedBox(
+                    width: 98,
+                    height: 24,
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade200,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        color: Colors.grey.shade200,
+                      ),
+                    ),
+                  ),
+                ),
+              ] else if (isLoading == true) ...[
+                Container(
+                  child: Text(
+                    "R\$ ${value.toStringAsFixed(2)}",
+                    style: textStyle,
+                  ),
+                )
+              ] */

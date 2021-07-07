@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:split_it/modules/home/repositories/home_repository.dart';
 import 'package:split_it/modules/home/widgets/app_bar/app_bar_controller.dart';
 import 'package:split_it/modules/home/widgets/app_bar/app_bar_state.dart';
 
@@ -12,7 +13,10 @@ class BottomAppBarWidget extends StatefulWidget {
 }
 
 class _BottomAppBarWidgetState extends State<BottomAppBarWidget> {
-  final controller = AppBarController();
+  final controller = AppBarController(repository);
+
+//provision moviment
+  static HomeRepository? get repository => null;
 
   @override
   void initState() {
@@ -27,7 +31,22 @@ class _BottomAppBarWidgetState extends State<BottomAppBarWidget> {
     switch (controller.state.runtimeType) {
       case AppBarStateLoading:
         {
-          return CircularProgressIndicator();
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              InfoCardWidget(
+                value: 0,
+                isLoading: false,
+              ),
+              SizedBox(
+                width: 25,
+              ),
+              InfoCardWidget(
+                value: 0,
+                isLoading: false,
+              )
+            ],
+          );
         }
       case AppBarStateSucess:
         {
@@ -37,12 +56,14 @@ class _BottomAppBarWidgetState extends State<BottomAppBarWidget> {
             children: [
               InfoCardWidget(
                 value: dashboard.received,
+                isLoading: true,
               ),
               SizedBox(
                 width: 25,
               ),
               InfoCardWidget(
                 value: -dashboard.payment,
+                isLoading: true,
               )
             ],
           );
