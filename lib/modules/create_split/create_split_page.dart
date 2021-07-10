@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:split_it/modules/create_split/create_split_controller.dart';
+import 'package:split_it/modules/create_split/steps/one/step_one_page.dart';
+import 'package:split_it/modules/create_split/steps/three/step_three_page.dart';
+import 'package:split_it/modules/create_split/steps/two/step_two_page.dart';
+import 'package:split_it/modules/create_split/widget/bottom_stepper_bar.dart';
+import 'package:split_it/modules/create_split/widget/create_split_appbar.dart';
 import 'package:split_it/theme/app_theme.dart';
 
 class CreateSplitPage extends StatefulWidget {
@@ -9,17 +15,25 @@ class CreateSplitPage extends StatefulWidget {
 }
 
 class _CreateSplitPageState extends State<CreateSplitPage> {
-  var pages = [
-    Container(
-      color: Colors.red,
-    ),
-    Container(
-      color: Colors.blue,
-    ),
-    Container(
-      color: Colors.purple,
-    ),
-  ];
+  final controller = CreateSplitController();
+
+  late List<Widget> pages;
+
+  @override
+  void initState() {
+    pages = [
+      StepOnePage(
+        onChange: (value) {
+          controller.setEventName(value);
+          setState(() {});
+        },
+      ),
+      StepTwoPage(),
+      StepThreePage(),
+    ];
+    super.initState();
+  }
+
   var index = 0;
   void nextPage() {
     if (index < 2) {
@@ -40,59 +54,13 @@ class _CreateSplitPageState extends State<CreateSplitPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.colors.backgroundPrimary,
-      appBar: PreferredSize(
-          child: SafeArea(
-            top: true,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 24),
-                  child: IconButton(
-                    onPressed: () {
-                      backPage();
-                    },
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: AppTheme.colors.backButton,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 24),
-                  child: Text.rich(
-                    TextSpan(
-                        text: "0${index + 1}",
-                        style: AppTheme.textStyle.stepperIndicatorPrimary,
-                        children: [
-                          TextSpan(
-                              text: " - 0${pages.length}",
-                              style:
-                                  AppTheme.textStyle.stepperIndicatorSecondary)
-                        ]),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          preferredSize: Size.fromHeight(60)),
-      body: pages[index],
-      bottomNavigationBar: SafeArea(
-        bottom: true,
-        child: Container(
-          height: 72,
-          child: Row(
-            children: [
-              Expanded(
-                  child: TextButton(onPressed: () {}, child: Text("Cancelar"))),
-              Expanded(
-                  child:
-                      TextButton(onPressed: () {}, child: Text("Continuar"))),
-            ],
-          ),
-        ),
-      ),
-    );
+        backgroundColor: AppTheme.colors.backgroundPrimary,
+        appBar: CreateSplitAppBarWidget(
+            onTapBack: backPage, actualPage: index, size: pages.length),
+        body: pages[index],
+        bottomNavigationBar: BottomStepperBarWidget(
+            enabledButtons: controller.enableNavigateButton(),
+            onTapCancel: () {},
+            onTapNext: nextPage));
   }
 }
